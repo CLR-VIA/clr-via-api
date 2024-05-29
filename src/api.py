@@ -2,13 +2,8 @@ from fastapi import FastAPI, APIRouter, File, UploadFile, Query, Body, Path
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 import uvicorn
-from routers import example
+import routers
 from datetime import datetime
-
-# Uvicorn Config
-host: str = "0.0.0.0"
-port: str = 8080
-reload: str = True
 
 # FastAPI Config
 clr_via_link = "https://github.com/angel-badillo-hernandez/codename-cv"
@@ -46,12 +41,8 @@ app: FastAPI = FastAPI(
 
 @app.get("/", tags=["/"])
 def docs_redirect():
-    return RedirectResponse("/docs")
+    return RedirectResponse(url="/index.html")  # change to this
 
+app.mount("/", StaticFiles(directory="../public", html=True), name="public")
 
-app.include_router(example.router)
-
-app.mount("/public", StaticFiles(directory="../public"), name="public")
-
-if __name__ == "__main__":
-    uvicorn.run("api:app", host=host, port=port, reload=reload)
+app.include_router(routers.example.router)
