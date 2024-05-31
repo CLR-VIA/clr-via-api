@@ -2,14 +2,18 @@ from fastapi import FastAPI, APIRouter, File, UploadFile, Query, Body, Path
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 import uvicorn
-import routers
+from . import routers
 from datetime import datetime
+import os
+
+# BASE PATH
+BASE_DIR = os.path.dirname(__file__)
 
 # FastAPI Config
 clr_via_link = "https://github.com/angel-badillo-hernandez/codename-cv"
 title: str = "CLR VIA API"
 description: str = f"""
-<a href="{clr_via_link}"><img href="/" src="public/logo.png" height=256px></a>
+<a href="{clr_via_link}"><img href="/" src="/logo.png" height=256px></a>
 ## Welcome to the CLR VIA API!
 Brief overview here...
 <br/>
@@ -43,6 +47,8 @@ app: FastAPI = FastAPI(
 def docs_redirect():
     return RedirectResponse(url="/index.html")  # change to this
 
-app.mount("/", StaticFiles(directory="../public", html=True), name="public")
+# Mount static files directory
+app.mount("/", StaticFiles(directory=os.path.join(BASE_DIR, "public"), html=True), name="public")
 
+# Include API Routers to FastAPI app
 app.include_router(routers.example.router)
