@@ -6,5 +6,5 @@ router:APIRouter = APIRouter(
 )
 
 @router.get("/")
-async def get_example():
-    return {"Hello": "There"}
+def get_example():
+    return 1
