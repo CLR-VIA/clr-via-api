@@ -1,14 +1,30 @@
-from fastapi import FastAPI, APIRouter, File, UploadFile, Query, Body, Path
+from fastapi import (
+    FastAPI,
+    APIRouter,
+    File,
+    UploadFile,
+    Query,
+    Body,
+    Path,
+    Depends,
+    HTTPException,
+)
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 import uvicorn
-from .routers import example
+from .routers import users, items
 from datetime import datetime
 import os
-from . import database_manager
+from .database import SessionLocal, engine, get_db
+from . import crud, models, schemas
+from sqlalchemy.orm import Session
 
 # BASE PATH
 BASE_DIR = os.path.dirname(__file__)
+
+models.Base.metadata.create_all(bind=engine)
+
 
 # FastAPI Config
 clr_via_link = "https://github.com/angel-badillo-hernandez/codename-cv"
@@ -44,17 +60,18 @@ app: FastAPI = FastAPI(
 )
 
 # Include API Routers to FastAPI app
-app.include_router(example.router)
+app.include_router(users.router)
+app.include_router(items.router)
+
 
 @app.get("/", tags=["/"])
 def docs_redirect():
     return RedirectResponse(url="/index.html")  # change to this
 
-# TODO: Database connection is not working, fix
-@app.get("/db-test")
-def d():
-    database_manager.db_test()
-    return {"hi": 11}
 
 # Mount static files directory
-app.mount("/", StaticFiles(directory=os.path.join(BASE_DIR, "public"), html=True), name="public")
+app.mount(
+    "/",
+    StaticFiles(directory=os.path.join(BASE_DIR, "public"), html=True),
+    name="public",
+)
