@@ -3,3 +3,4 @@ pydantic
 uvicorn
 requests
 psycopg[binary ,pool]
+SQLAlchemy

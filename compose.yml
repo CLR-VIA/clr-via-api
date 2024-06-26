@@ -3,30 +3,32 @@ services:
     build: .
     command: python -m uvicorn app.api:app --host 0.0.0.0 --reload
     volumes:
-      - .:/app
+      - ./app:/app/app
     ports:
       - 8000:8000
     depends_on:
-      - db
+      - postgres-db
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=clrvia
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=clrvia
-      - POSTGRES_SERVER=db
-  db:
-    image: postgres:16.3
+    env_file:
+      - ./db_config.env
+
+  postgres-db:
+    image: postgres:13
+    env_file:
+      - ./db_config.env
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    expose:
-      - 5432:5432
-    restart: always
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  pg-admin:
+    image: dpage/pgadmin4:latest
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=clrvia
-      - POSTGRES_DB=clrvia
-      - POSTGRES_SERVER=db
-      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
+      PGADMIN_DEFAULT_EMAIL: admin@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+
 volumes:
-  postgres_data:
+  postgres-data:
