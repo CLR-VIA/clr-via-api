@@ -13,7 +13,7 @@ services:
       - ./db_config.env
 
   postgres-db:
-    image: postgres:13
+    image: postgres:latest
     env_file:
       - ./db_config.env
     volumes:
