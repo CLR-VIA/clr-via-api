@@ -13,7 +13,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 import uvicorn
-from .routers import users, items
+from .routers import users
 from datetime import datetime
 import os
 from .database import SessionLocal, engine, get_db
