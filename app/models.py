@@ -33,9 +33,9 @@ class User(Base):
     skills = Column(ARRAY(String, dimensions=1))
     certifications = Column(ARRAY(String, dimensions=1))
 
-    experience = Relationship("Experience", back_populates="user")
-    education = Relationship("Education", back_populates="user")
-    projects = Relationship("Project", back_populates="user")
+    experience = Relationship("Experience", back_populates="user", cascade="all, delete-orphan")
+    education = Relationship("Education", back_populates="user", cascade="all, delete-orphan")
+    projects = Relationship("Project", back_populates="user", cascade="all, delete-orphan")
 
 
 class Project(Base):

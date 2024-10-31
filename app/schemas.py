@@ -24,7 +24,7 @@ class ProjectBase(BaseModel):
     title: str
     start_date: date
     end_date: date | None
-    description: list[str] | None
+    description: list[str] = []
     on_going: bool
 
 
@@ -46,7 +46,7 @@ class ExperienceBase(BaseModel):
     location: str
     start_date: date
     end_date: date | None
-    description: list[str]
+    description: list[str] = []
     on_going: bool
 
 
@@ -67,7 +67,7 @@ class EducationBase(BaseModel):
     major: str
     minor: str | None
     graduation_date: str
-    description: list[str]
+    description: list[str] = []
 
 
 class EducationCreate(EducationBase):
@@ -92,8 +92,8 @@ class UserBase(BaseModel):
     github: str | None
     portfolio: str | None
     summary: str | None
-    skills: list[str] | None
-    certifications: list[str] | None
+    skills: list[str] = []
+    certifications: list[str] = []
 
 
 class UserCreate(UserBase):
