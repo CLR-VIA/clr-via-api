@@ -23,52 +23,67 @@ class User(Base):
     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
 
     first_name = Column(String)
     middle_name = Column(String, nullable=True)
     last_name = Column(String)
     phone_number = Column(String, nullable=True)
-    linkedIn = Column(String, nullable=True)
-    gitHub = Column(String, nullable=True)
+    linkedin = Column(String, nullable=True)
+    github = Column(String, nullable=True)
     portfolio = Column(String, nullable=True)
     summary = Column(String, nullable=True)
-    workExperience = Column(JSONB, nullable=True)
-    education = Column(JSONB, nullable=True)
-    skills = Column(String, nullable=True)
-    projects = Column(JSON, nullable=True)
-    certifications = Column(String, nullable=True)
+    skills = Column(JSONB, nullable=True)
+    certifications = Column(JSONB, nullable=True)
 
-    # workExperiences = Relationship("WorkExperience", back_populates="workExperiences")
-
-
-# class WorkExperience(Base):
-#     __tablename__: str = "workExperience"
-
-#     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
-#     employer = Column(String)
-#     title = Column(String)
-#     location = Column(String)
-#     start_date = Column(Date)
-#     end_date = Column(Date)
-#     description = Column(JSONB)
-#     on_going = Column(Boolean)
-
-#     user_id = Column(Uuid, ForeignKey("users.id"))
-#     user = Relationship("User", back_populates="workExperiences")
+    experience = Relationship("WorkExperience", back_populates="experience")
+    education = Relationship("Education", back_populates="education")
+    projects = Relationship("Project", back_populates="project")
 
 
-# class Education(Base):
-#     __tablename__: str = "education"
+class Project(Base):
+    __tablename__:str = "project"
 
-#     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
-#     school_name = Column(String)
-#     major = Column(String)
-#     graduation_date = Column(Date)
-#     description = Column(JSONB)
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    company = Column(String)
+    title = Column(String)
+    start_date = Column(Date)
+    end_date = Column(Date, nullable=True)
+    description = Column(JSONB, nullable=True)
+    on_going = Column(Boolean)
 
-#     user_id = Column(Uuid, ForeignKey("users.id"))
-#     user = Relationship("User", back_populates="workExperiences")
+    user_id = Column(Uuid, ForeignKey("users.id"))
+    user = Column("User", back_populates="projects")
+
+
+
+class Experience(Base):
+    __tablename__: str = "work_experience"
+
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    employer = Column(String)
+    title = Column(String)
+    location = Column(String)
+    start_date = Column(Date)
+    end_date = Column(Date, nullable=True)
+    description = Column(JSONB, nullable=True)
+    on_going = Column(Boolean)
+
+    user_id = Column(Uuid, ForeignKey("users.id"))
+    user = Relationship("User", back_populates="experience")
+
+
+class Education(Base):
+    __tablename__: str = "education"
+
+    id = Column(Uuid, primary_key=True, default=uuid.uuid4)
+    school_name = Column(String)
+    major = Column(String)
+    minor = Column(String, nullable=True)
+    graduation_date = Column(Date)
+    description = Column(JSONB)
+
+    user_id = Column(Uuid, ForeignKey("users.id"))
+    user = Relationship("User", back_populates="education")
 
 
 # # Example class
