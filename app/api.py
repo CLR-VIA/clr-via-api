@@ -61,7 +61,7 @@ app: FastAPI = FastAPI(
 
 # Include API Routers to FastAPI app
 app.include_router(users.router)
-app.include_router(items.router)
+
 
 
 @app.get("/", tags=["/"])

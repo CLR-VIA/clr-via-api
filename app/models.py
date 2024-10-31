@@ -30,12 +30,12 @@ class User(Base):
     github = Column(String, nullable=True)
     portfolio = Column(String, nullable=True)
     summary = Column(String, nullable=True)
-    skills = Column(ARRAY(String, dimensions=1), nullable=True)
-    certifications = Column(ARRAY(String, dimensions=1), nullable=True)
+    skills = Column(ARRAY(String, dimensions=1))
+    certifications = Column(ARRAY(String, dimensions=1))
 
-    experience = Relationship("WorkExperience", back_populates="experience")
-    education = Relationship("Education", back_populates="education")
-    projects = Relationship("Project", back_populates="project")
+    experience = Relationship("Experience", back_populates="user")
+    education = Relationship("Education", back_populates="user")
+    projects = Relationship("Project", back_populates="user")
 
 
 class Project(Base):
@@ -46,15 +46,15 @@ class Project(Base):
     title = Column(String)
     start_date = Column(Date)
     end_date = Column(Date, nullable=True)
-    description = Column(ARRAY(String, dimensions=1), nullable=True)
+    description = Column(ARRAY(String, dimensions=1))
     on_going = Column(Boolean)
 
     user_id = Column(Uuid, ForeignKey("users.id"))
-    user = Column("User", back_populates="projects")
+    user = Relationship("User", back_populates="projects")
 
 
 class Experience(Base):
-    __tablename__: str = "work_experience"
+    __tablename__: str = "experience"
 
     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     employer = Column(String)
@@ -62,7 +62,7 @@ class Experience(Base):
     location = Column(String)
     start_date = Column(Date)
     end_date = Column(Date, nullable=True)
-    description = Column(ARRAY(String, dimensions=1), nullable=True)
+    description = Column(ARRAY(String, dimensions=1))
     on_going = Column(Boolean)
 
     user_id = Column(Uuid, ForeignKey("users.id"))

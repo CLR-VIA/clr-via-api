@@ -7,24 +7,16 @@ from . import models, schemas
 
 def get_user_by_id(db: Session, user_id: UUID):
     try:
-        user = db.query(models.User).filter(models.User.id == user_id).first()
-        if not user:
-            raise ValueError("User not found.")
-        return user
+        return db.query(models.User).filter(models.User.id == user_id).first()
     except Exception as e:
-        raise Exception(f"An error occurred while retrieving the user: {str(e)}")
+        raise Exception(f"An error occurred while retrieving users: {str(e)}")
 
 
 def get_user_by_email(db: Session, email: str):
     try:
-        user = db.query(models.User).filter(models.User.email == email).first()
-        if not user:
-            raise ValueError("User not found.")
-        return user
+        return db.query(models.User).filter(models.User.email == email).first()
     except Exception as e:
-        raise Exception(
-            f"An error occurred while retrieving the user by email: {str(e)}"
-        )
+        raise Exception(f"An error occurred while retrieving users: {str(e)}")
 
 
 def get_users(db: Session, skip: int = 0, limit: int = None):
@@ -66,12 +58,7 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 def get_project_by_id(db: Session, project_id: UUID) -> models.Project:
     try:
-        project = (
-            db.query(models.Project).filter(models.Project.id == project_id).first()
-        )
-        if not project:
-            raise ValueError("Project not found.")
-        return project
+        return db.query(models.Project).filter(models.Project.id == project_id).first()
     except Exception as e:
         raise Exception(f"An error occurred while retrieving the project: {str(e)}")
 
