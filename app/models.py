@@ -4,14 +4,12 @@ from sqlalchemy import (
     ForeignKey,
     Integer,
     String,
-    JSON,
     Float,
     Text,
     Uuid,
     Date,
-    ARRAY,
 )
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.dialects.postgresql import JSONB, ARRAY, JSON
 from sqlalchemy.orm import Relationship
 from .database import Base
 import uuid
@@ -32,8 +30,8 @@ class User(Base):
     github = Column(String, nullable=True)
     portfolio = Column(String, nullable=True)
     summary = Column(String, nullable=True)
-    skills = Column(JSONB, nullable=True)
-    certifications = Column(JSONB, nullable=True)
+    skills = Column(ARRAY(String, dimensions=1), nullable=True)
+    certifications = Column(ARRAY(String, dimensions=1), nullable=True)
 
     experience = Relationship("WorkExperience", back_populates="experience")
     education = Relationship("Education", back_populates="education")
@@ -48,7 +46,7 @@ class Project(Base):
     title = Column(String)
     start_date = Column(Date)
     end_date = Column(Date, nullable=True)
-    description = Column(JSONB, nullable=True)
+    description = Column(ARRAY(String, dimensions=1), nullable=True)
     on_going = Column(Boolean)
 
     user_id = Column(Uuid, ForeignKey("users.id"))
@@ -64,7 +62,7 @@ class Experience(Base):
     location = Column(String)
     start_date = Column(Date)
     end_date = Column(Date, nullable=True)
-    description = Column(JSONB, nullable=True)
+    description = Column(ARRAY(String, dimensions=1), nullable=True)
     on_going = Column(Boolean)
 
     user_id = Column(Uuid, ForeignKey("users.id"))
@@ -79,7 +77,7 @@ class Education(Base):
     major = Column(String)
     minor = Column(String, nullable=True)
     graduation_date = Column(Date)
-    description = Column(JSONB)
+    description = Column(ARRAY(String, dimensions=1))
 
     user_id = Column(Uuid, ForeignKey("users.id"))
     user = Relationship("User", back_populates="education")
