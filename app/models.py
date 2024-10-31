@@ -41,7 +41,7 @@ class User(Base):
 
 
 class Project(Base):
-    __tablename__:str = "project"
+    __tablename__: str = "project"
 
     id = Column(Uuid, primary_key=True, default=uuid.uuid4)
     company = Column(String)
@@ -53,7 +53,6 @@ class Project(Base):
 
     user_id = Column(Uuid, ForeignKey("users.id"))
     user = Column("User", back_populates="projects")
-
 
 
 class Experience(Base):
