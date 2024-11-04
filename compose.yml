@@ -10,12 +10,13 @@ services:
       - postgres-db
     restart: always
     env_file:
-      - ./db_config.env
+      - ./.db.config
+      - ./.auth.config
 
   postgres-db:
     image: postgres:latest
     env_file:
-      - ./db_config.env
+      - ./.db.config
     volumes:
       - postgres-data:/var/lib/postgresql/data
     ports:
