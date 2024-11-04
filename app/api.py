@@ -8,6 +8,8 @@ from fastapi import (
     Path,
     Depends,
     HTTPException,
+    Response,
+    status
 )
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -19,6 +21,9 @@ import os
 from .database import SessionLocal, engine, get_db
 from . import crud, models, schemas
 from sqlalchemy.orm import Session
+
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from .utils import VerifyToken
 
 # BASE PATH
 BASE_DIR = os.path.dirname(__file__)
@@ -59,6 +64,9 @@ app: FastAPI = FastAPI(
     # license_info=license_info,
 )
 
+# TODO: Finish Auth0 setup
+token_auth_scheme:HTTPBearer = HTTPBearer()
+
 # Include API Routers to FastAPI app
 app.include_router(users.router)
 
@@ -68,6 +76,17 @@ app.include_router(users.router)
 def docs_redirect():
     return RedirectResponse(url="/index.html")  # change to this
 
+# Remove this example route
+@app.get("/api/private")
+def private(response: Response, token:HTTPAuthorizationCredentials = Depends(token_auth_scheme)):
+    
+    result = VerifyToken(token.credentials).verify()
+    print(result)
+
+    if result.get("status") == "error":
+        response.status_code = status.HTTP_400_BAD_REQUEST
+
+    return result
 
 # Mount static files directory
 app.mount(

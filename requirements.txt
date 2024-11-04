@@ -4,3 +4,5 @@ uvicorn
 requests
 psycopg[binary ,pool]
 SQLAlchemy
+PyJWT
+cryptography
