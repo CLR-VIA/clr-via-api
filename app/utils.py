@@ -12,7 +12,7 @@ def set_up():
     # else:
     config = {
             "DOMAIN": os.getenv("DOMAIN", "your.domain.com"),
-            "API_AUDIENCE": os.getenv("API_AUDIENCE", "your.audience.com"),
+            "AUDIENCE": os.getenv("AUDIENCE", "your.audience.com"),
             "ISSUER": os.getenv("ISSUER", "https://your.domain.com/"),
             "ALGORITHMS": os.getenv("ALGORITHMS", "RS256"),
         }
@@ -49,7 +49,7 @@ class VerifyToken():
                 self.token,
                 self.signing_key,
                 algorithms=self.config["ALGORITHMS"],
-                audience=self.config["API_AUDIENCE"],
+                audience=self.config["AUDIENCE"],
                 issuer=self.config["ISSUER"],
             )
         except Exception as e:
